@@ -1,3 +1,5 @@
 .settings
 .metadata
 .idea
+parent.iml
+*.iml
