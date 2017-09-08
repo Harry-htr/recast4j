@@ -18,40 +18,69 @@ freely, subject to the following restrictions:
 */
 package org.recast4j.recast;
 
-/** A compact, static heightfield representing unobstructed space. */
+/** A compact, static heightfield representing unobstructed space.
+ * 一个紧凑的，静态的高度，代表无阻碍的空间
+ * */
 public class CompactHeightfield {
 
-	/** The width of the heightfield. (Along the x-axis in cell units.) */
+	/** The width of the heightfield. (Along the x-axis in cell units.)
+     * 沿x-axis 轴 以cell为单位的宽
+     * */
 	public int width;
-	/** The height of the heightfield. (Along the z-axis in cell units.) */
+	/** The height of the heightfield. (Along the z-axis in cell units.)
+     * 沿z轴 以cell为单位的长
+     * */
 	public int height;
-	/** The number of spans in the heightfield. */
+	/** The number of spans in the heightfield.
+     * span的数量 todo span 是what？
+     * */
 	public int spanCount;
-	/** The walkable height used during the build of the field.  (See: RecastConfig::walkableHeight) */
+	/** The walkable height used during the build of the field.  (See: RecastConfig::walkableHeight)
+     * 在场地的建造过程中使用的可行走高度
+     * */
 	public int walkableHeight;
-	/** The walkable climb used during the build of the field. (See: RecastConfig::walkableClimb) */
+	/** The walkable climb used during the build of the field. (See: RecastConfig::walkableClimb)
+     * 可攀爬的最大高度
+     * */
 	public int walkableClimb;
 	/** The AABB border size used during the build of the field. (See: RecastConfig::borderSize) */
 	public int borderSize;
-	/** The maximum distance value of any span within the field. */
+	/** The maximum distance value of any span within the field.
+     * span 之间最大间距
+     * */
 	public int maxDistance;
-	/** The maximum region id of any span within the field. */
+	/** The maximum region id of any span within the field.
+     * span的最大区域id
+     *
+     * */
 	public int maxRegions;
-	/** The minimum bounds in world space. [(x, y, z)] */
+	/** The minimum bounds in world space. [(x, y, z)]
+     * 在世界坐标系中的最小边界坐标
+     * */
 	public final float[] bmin = new float[3];
-	/** The maximum bounds in world space. [(x, y, z)] */
+	/** The maximum bounds in world space. [(x, y, z)]
+     * 世界坐标系中最大边界坐标
+     * */
 	public final float[] bmax = new float[3];
-	/** The size of each cell. (On the xz-plane.) */
+	/** The size of each cell. (On the xz-plane.)
+     * 每一个cell的大小
+     * */
 	public float cs;
-	/** The height of each cell. (The minimum increment along the y-axis.) */
+	/** The height of each cell. (The minimum increment along the y-axis.)
+     * 每个cell的高度
+     * */
 	public float ch;
 	/** Array of cells. [Size: #width*#height] */
 	public CompactCell[] cells;
 	/** Array of spans. [Size: #spanCount] */
 	public CompactSpan[] spans;
-	/** Array containing border distance data. [Size: #spanCount] */
+	/** Array containing border distance data. [Size: #spanCount]
+     * 边界距离数组
+     * */
 	public int[] dist;
-	/** Array containing area id data. [Size: #spanCount] */
+	/** Array containing area id data. [Size: #spanCount]
+     * 区域id数组
+     * */
 	public int[] areas;
 
 }

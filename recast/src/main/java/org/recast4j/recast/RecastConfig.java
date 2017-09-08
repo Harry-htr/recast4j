@@ -23,60 +23,78 @@ import org.recast4j.recast.RecastConstants.PartitionType;
 public class RecastConfig {
 	public final PartitionType partitionType;
 
-	/** The width/height size of tile's on the xz-plane. [Limit: >= 0] [Units: vx] **/
+	/** The width/height size of tile's on the xz-plane. [Limit: >= 0] [Units: vx]
+     * xz-plane 上tile的宽高
+     * **/
 	public final int tileSize;
 
-	/** The xz-plane cell size to use for fields. [Limit: > 0] [Units: wu] **/
+	/** The xz-plane cell size to use for fields. [Limit: > 0] [Units: wu]
+     * xz-plane 上一个单元格的宽高
+     * **/
 	public final float cs;
 
-	/** The y-axis cell size to use for fields. [Limit: > 0] [Units: wu] **/
+	/** The y-axis cell size to use for fields. [Limit: > 0] [Units: wu]
+     * y-axis 上一个单元格的高度
+     * **/
 	public final float ch;
 
-	/** The maximum slope that is considered walkable. [Limits: 0 <= value < 90] [Units: Degrees] **/
+	/** The maximum slope that is considered walkable. [Limits: 0 <= value < 90] [Units: Degrees]
+     * 可行走的最大坡度
+     * **/
 	public final float walkableSlopeAngle;
 
 	/**
 	 * Minimum floor to 'ceiling' height that will still allow the floor area to be considered walkable. [Limit: >= 3]
+     * 可直接跨越的最大高度（高度不阻碍正常行走）
 	 * [Units: vx]
 	 **/
 	public final int walkableHeight;
 
-	/** Maximum ledge height that is considered to still be traversable. [Limit: >=0] [Units: vx] **/
+	/** Maximum ledge height that is considered to still be traversable. [Limit: >=0] [Units: vx]
+     *可攀爬的最大高度
+     * **/
 	public final int walkableClimb;
 
 	/**
-	 * The distance to erode/shrink the walkable area of the heightfield away from obstructions. [Limit: >=0] [Units:
-	 * vx]
+	 * The distance to erode/shrink the walkable area of the heightfield away from obstructions. [Limit: >=0] [Units:vx]
+     * 绕行障碍物半径
 	 **/
 	public final int walkableRadius;
 
-	/** The maximum allowed length for contour edges along the border of the mesh. [Limit: >=0] [Units: vx] **/
+	/** The maximum allowed length for contour edges along the border of the mesh. [Limit: >=0] [Units: vx]
+	 * 被允许接近地图边缘的最大长度
+     * **/
 	public final int maxEdgeLen;
 
 	/**
 	 * The maximum distance a simplfied contour's border edges should deviate the original raw contour. [Limit: >=0]
+     * 偏移原始轮廓的最大距离
 	 * [Units: vx]
 	 **/
 	public final float maxSimplificationError;
 
-	/** The minimum number of cells allowed to form isolated island areas. [Limit: >=0] [Units: vx] **/
+	/** The minimum number of cells allowed to form isolated island areas. [Limit: >=0] [Units: vx]
+     * 形成独立区域的最小单元格数量
+     * **/
 	public final int minRegionArea;
 
 	/**
-	 * Any regions with a span count smaller than this value will, if possible, be merged with larger regions. [Limit:
-	 * >=0] [Units: vx]
+	 * Any regions with a span count smaller than this value will, if possible, be merged with larger regions. [Limit:>=0] [Units: vx]
+     * 小于此区域的 区域将被合并
 	 **/
 	public final int mergeRegionArea;
 
 	/**
 	 * The maximum number of vertices allowed for polygons generated during the contour to polygon conversion process.
 	 * [Limit: >= 3]
+     * 多边形定点数的最大值
 	 **/
 	public final int maxVertsPerPoly;
 
 	/**
 	 * Sets the sampling distance to use when generating the detail mesh. (For height detail only.) [Limits: 0 or >=
 	 * 0.9] [Units: wu]
+     * 生成详细网格时的采样距离
 	 **/
 	public final float detailSampleDist;
 

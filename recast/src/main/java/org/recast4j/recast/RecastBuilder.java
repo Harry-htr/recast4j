@@ -180,19 +180,17 @@ public class RecastBuilder {
 		// Step 2. Rasterize input polygon soup.
 		//
 
-		// Allocate voxel heightfield where we rasterize our input data to.
+		// Allocate voxel heightfield where we rasterize our input data to.分配voxel heightfield，我们将输入数据进行栅格化
 		Heightfield solid = new Heightfield(bcfg.width, bcfg.height, bcfg.bmin, bcfg.bmax, cfg.cs, cfg.ch);
 
-		// Allocate array that can hold triangle area types.
-		// If you have multiple meshes you need to process, allocate
-		// and array which can hold the max number of triangles you need to
-		// process.
+		// Allocate array that can hold triangle area types.分配可以容纳三角形区域类型的数组
+		// If you have multiple meshes you need to process, allocate  and array which can hold the max number of triangles you need to process.如果你有多个网格，你需要处理，分配
+		// 而数组可以容纳你需要处理的最大三角形数
 
-		// Find triangles which are walkable based on their slope and rasterize
-		// them.
-		// If your input data is multiple meshes, you can transform them here,
+		// Find triangles which are walkable based on their slope and rasterize them.找到可以在斜坡上行走的三角形，并将其栅格化
+		// If your input data is multiple meshes, you can transform them here,如果你的输入数据是多个网格，你可以在这里进行转换，
 		// calculate
-		// the are type for each of the meshes and rasterize them.
+		// the are type for each of the meshes and rasterize them.每个网格都是类型，并对它们进行栅格化
 		float[] verts = geom.getVerts();
 		boolean tiled = cfg.tileSize > 0;
 		int totaltris = 0;

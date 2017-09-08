@@ -27,8 +27,8 @@ import java.util.List;
 public class ObjImporter {
 
 	private class ObjImporterContext {
-	    List<Float> vertexPositions = new ArrayList<>();
-	    List<Integer> meshFaces = new ArrayList<>();
+	    List<Float> vertexPositions = new ArrayList<>(); // 地图顶点集合 (3个一组)
+	    List<Integer> meshFaces = new ArrayList<>(); // 地图平面集合 （6个一组）
 	}
 
     public InputGeom load(InputStream is) {

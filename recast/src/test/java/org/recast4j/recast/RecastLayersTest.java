@@ -12,10 +12,10 @@ public class RecastLayersTest {
 	private float m_agentRadius = 0.6f;
 	private float m_agentMaxClimb = 0.9f;
 	private float m_agentMaxSlope = 45.0f;
-	private int m_regionMinSize = 8;
-	private int m_regionMergeSize = 20;
-	private float m_edgeMaxLen = 12.0f;
-	private float m_edgeMaxError = 1.3f;
+	private int m_regionMinSize = 8;  // 范围最小尺寸
+	private int m_regionMergeSize = 20; // 范围合并尺寸
+	private float m_edgeMaxLen = 12.0f; // 边缘最大长度
+	private float m_edgeMaxError = 1.3f; // 边缘最大容错
 	private int m_vertsPerPoly = 6;
 	private float m_detailSampleDist = 6.0f;
 	private float m_detailSampleMaxError = 1.0f;

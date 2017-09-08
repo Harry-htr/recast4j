@@ -6,19 +6,29 @@ public class RecastBuilderConfig {
 
 	public final RecastConfig cfg;
 
-	/** The width of the field along the x-axis. [Limit: >= 0] [Units: vx] **/
+	/** The width of the field along the x-axis. [Limit: >= 0] [Units: vx]
+	 * 沿x轴的场的宽度
+     * **/
 	public final int width;
 
-	/** The height of the field along the z-axis. [Limit: >= 0] [Units: vx] **/
+	/** The height of the field along the z-axis. [Limit: >= 0] [Units: vx]
+     * 沿z轴的场的高度
+     * **/
 	public final int height;
 
-	/** The minimum bounds of the field's AABB. [(x, y, z)] [Units: wu] **/
+	/** The minimum bounds of the field's AABB. [(x, y, z)] [Units: wu]
+     * 该领域的AABB的最小边界
+     * **/
 	public final float[] bmin = new float[3];
 
-	/** The maximum bounds of the field's AABB. [(x, y, z)] [Units: wu] **/
+	/** The maximum bounds of the field's AABB. [(x, y, z)] [Units: wu]
+     * 该领域的AABB的最大边界
+     * **/
 	public final float[] bmax = new float[3];
 
-	/** The size of the non-navigable border around the heightfield. [Limit: >=0] [Units: vx] **/
+	/** The size of the non-navigable border around the heightfield. [Limit: >=0] [Units: vx]
+     * 在heightfield附近的非通航边界的大小
+     * **/
 	public final int borderSize;
 
 	/** Set to true for tiled build **/
@@ -34,7 +44,7 @@ public class RecastBuilderConfig {
 		copy(this.bmin, bmin);
 		copy(this.bmax, bmax);
 		if (tiled) {
-			float ts = cfg.tileSize * cfg.cs;
+			float ts = cfg.tileSize * cfg.cs; // tile 是由cell组成？ tile的大小实际上是以cell为单位？ todo tile ？
 			this.bmin[0] += tx * ts;
 			this.bmin[2] += ty * ts;
 			this.bmax[0] = this.bmin[0] + ts;
