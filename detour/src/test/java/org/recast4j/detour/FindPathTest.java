@@ -134,12 +134,35 @@ public class FindPathTest extends AbstractDetourTest {
 	@Test
 	public void testFindPathStraight() {
 		QueryFilter filter = new QueryFilter();
+
+		float[] f1 = {-6.45f,0.11f,4.47f};
+		float[] e1 = {3f,3f,3f};
+
+        float[] f2 = {-6.45f,0.11f,11.78f};
+//        float[] f2 = {-6.72f,0.11f,21f};
+
+		FindNearestPolyResult fr = query.findNearestPoly(f1,e1,filter);
+
+		long rf1 = fr.getNearestRef();
+
+		fr = query.findNearestPoly(f2,e1,filter);
+		long rf2 = fr.getNearestRef();
+
+        FindPathResult pathResult = query.findPath(rf1,rf2,f1,f2,filter);
+
+        List<StraightPathItem> pathItemList = query.findStraightPath(f1,f2,pathResult.getRefs(),Integer.MAX_VALUE,0);
+
+        RaycastHit hit = query.raycast(rf1,f1,f2,filter,0,0);
+
+        System.out.println(pathItemList.size());
+
 		for (int i = 0; i < straightPaths.length; i++) {// startRefs.length; i++) {
 			long startRef = startRefs[i];
 			long endRef = endRefs[i];
 			float[] startPos = startPoss[i];
 			float[] endPos = endPoss[i];
 			FindPathResult path = query.findPath(startRef, endRef, startPos, endPos, filter);
+
 			List<StraightPathItem> straightPath = query.findStraightPath(startPos, endPos, path.getRefs(), Integer.MAX_VALUE, 0);
 			Assert.assertEquals(straightPaths[i].length, straightPath.size());
 			for (int j = 0; j < straightPaths[i].length; j++) {

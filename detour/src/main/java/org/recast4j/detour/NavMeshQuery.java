@@ -536,12 +536,12 @@ public class NavMeshQuery {
 	/// @note If the search box does not intersect any polygons the search will
 	/// return #DT_SUCCESS, but @p nearestRef will be zero. So if in doubt, check
 	/// @p nearestRef before using @p nearestPt.
-	///
+	///@note如果搜索框不与任何多边形相交，则搜索将返回#DT_SUCCESS，但是@p nearestRef将为零。 所以如果有疑问，请在使用@p nearestPt之前检查@p nearestRef。
 	/// @}
 	/// @name Local Query Functions
 	///@{
 
-	/// Finds the polygon nearest to the specified center point.
+	/// Finds the polygon nearest to the specified center point.找到最接近指定中心点的多边形。
 	///  @param[in]		center		The center of the search box. [(x, y, z)]
 	///  @param[in]		extents		The search distance along each axis. [(x, y, z)]
 	///  @param[in]		filter		The polygon filter to apply to the query.
@@ -550,7 +550,7 @@ public class NavMeshQuery {
 
 		float[] nearestPt = null;
 
-		// Get nearby polygons from proximity grid.
+		// Get nearby polygons from proximity grid.从邻近网格获取附近的多边形。
 		List<Long> polys = queryPolygons(center, extents, filter);
 
 		// Find nearest polygon amongst the nearby polygons.
@@ -664,9 +664,9 @@ public class NavMeshQuery {
 	}
 
 	/**
-	 * Finds polygons that overlap the search box.
+	 * Finds polygons that overlap the search box.查找与搜索框重叠的多边形。
 	 * 
-	 * If no polygons are found, the function will return with a polyCount of zero.
+	 * If no polygons are found, the function will return with a polyCount of zero.如果没有找到多边形，函数将返回一个polyCount为零。
 	 * 
 	 * @param center
 	 *            The center of the search box. [(x, y, z)]
@@ -1144,7 +1144,7 @@ public class NavMeshQuery {
 		return new UpdateSlicedPathResult(m_query.status, iter);
 	}
 	
-	/// Finalizes and returns the results of a sliced path query.
+	/// Finalizes and returns the results of a sliced path query.完成并返回切片路径查询的结果。
 	///  @param[out]	path		An ordered list of polygon references representing the path. (Start to end.) 
 	///  							[(polyRef) * @p pathCount]
 	/// @returns The status flags for the query.
@@ -1205,6 +1205,7 @@ public class NavMeshQuery {
 
 	/// Finalizes and returns the results of an incomplete sliced path query, returning the path to the furthest
 	/// polygon on the existing path that was visited during the search.
+    // 完成并返回不完整的切片路径查询的结果，将路径返回到搜索期间访问的现有路径上最远的多边形。
 	///  @param[in]		existing		An array of polygon references for the existing path.
 	///  @param[in]		existingSize	The number of polygon in the @p existing array.
 	///  @param[out]	path			An ordered list of polygon references representing the path. (Start to end.) 
@@ -1542,7 +1543,7 @@ public class NavMeshQuery {
 	/// be filled as far as possible from the start position toward the end 
 	/// position.
 	///
-	/// Moves from the start to the end position constrained to the navigation mesh.
+	/// Moves from the start to the end position constrained to the navigation mesh.从开始移动到结束位置限制到导航网格。
 	///  @param[in]		startRef		The reference id of the start polygon.
 	///  @param[in]		startPos		A position of the mover within the start polygon. [(x, y, x)]
 	///  @param[in]		endPos			The desired end position of the mover. [(x, y, z)]
@@ -1818,19 +1819,19 @@ public class NavMeshQuery {
 
 	/// @par
 	///
-	/// This method is meant to be used for quick, short distance checks.
+	/// This method is meant to be used for quick, short distance checks.该方法用于快速，短距离检查。
 	///
 	/// If the path array is too small to hold the result, it will be filled as 
-	/// far as possible from the start postion toward the end position.
+	/// far as possible from the start postion toward the end position.如果路径数组太小而不能保存结果，则它将尽可能从起始位置到终端位置被填充。
 	///
-	/// <b>Using the Hit Parameter t of RaycastHit</b>
+	/// <b>Using the Hit Parameter t of RaycastHit</b>使用RaycastHit的命中参数t
 	/// 
 	/// If the hit parameter is a very high value (FLT_MAX), then the ray has hit 
 	/// the end position. In this case the path represents a valid corridor to the 
-	/// end position and the value of @p hitNormal is undefined.
+	/// end position and the value of @p hitNormal is undefined.如果命中参数是非常高的值（FLT_MAX），则光线已经到达结束位置。在这种情况下，路径表示到结束位置的有效走廊，并且@p命中规则的值未定义。
 	///
 	/// If the hit parameter is zero, then the start position is on the wall that 
-	/// was hit and the value of @p hitNormal is undefined.
+	/// was hit and the value of @p hitNormal is undefined.如果命中参数为零，则起始位置在被击中的墙上，并且@p命中正则值未定义。
 	///
 	/// If 0 < t < 1.0 then the following applies:
 	///
@@ -1843,30 +1844,33 @@ public class NavMeshQuery {
 	///
 	/// The raycast ignores the y-value of the end position. (2D check.) This 
 	/// places significant limits on how it can be used. For example:
+	// raycast忽略了结束位置的y值。 （2D检查。）这对于如何使用会产生很大的限制。 例如：
 	///
 	/// Consider a scene where there is a main floor with a second floor balcony 
 	/// that hangs over the main floor. So the first floor mesh extends below the 
 	/// balcony mesh. The start position is somewhere on the first floor. The end 
-	/// position is on the balcony.
+	/// position is on the balcony. 考虑一个场地，那里有一个主楼层，二楼阳台挂在主楼层 所以第一层网格延伸到阳台网格下面
+    /// 起始位置在一楼的某处。 最后的位置在阳台上。
 	///
-	/// The raycast will search toward the end position along the first floor mesh. 
+	/// The raycast will search toward the end position along the first floor mesh. raycast将沿着第一层网格搜索到最终位置。
 	/// If it reaches the end position's xz-coordinates it will indicate FLT_MAX
 	/// (no wall hit), meaning it reached the end position. This is one example of why
 	/// this method is meant for short distance checks.
-	///
+	///如果达到最终位置的xz坐标，它将指示FLT_MAX（无墙命中）意味着它到达结束位置。这是为什么这种方法用于短距离检查的一个示例。
+    ///
 	/// Casts a 'walkability' ray along the surface of the navigation mesh from 
 	/// the start position toward the end position.
 	/// @note A wrapper around raycast(..., RaycastHit*). Retained for backward compatibility.
-	///  @param[in]		startRef	The reference id of the start polygon.
+	///  @param[in]		startRef	The reference id of the start polygon.起始多边形的引用ID。
 	///  @param[in]		startPos	A position within the start polygon representing 
-	///  							the start of the ray. [(x, y, z)]
-	///  @param[in]		endPos		The position to cast the ray toward. [(x, y, z)]
+	///  							the start of the ray. [(x, y, z)]起始多边形内的位置，表示射线的开始。 [（x，y，z）]
+	///  @param[in]		endPos		The position to cast the ray toward. [(x, y, z)]放射线的位置。 [（x，y，z）]
 	///  @param[out]	t			The hit parameter. (FLT_MAX if no wall hit.)
-	///  @param[out]	hitNormal	The normal of the nearest wall hit. [(x, y, z)]
-	///  @param[in]		filter		The polygon filter to apply to the query.
-	///  @param[out]	path		The reference ids of the visited polygons. [opt]
-	///  @param[out]	pathCount	The number of visited polygons. [opt]
-	///  @param[in]		maxPath		The maximum number of polygons the @p path array can hold.
+	///  @param[out]	hitNormal	The normal of the nearest wall hit. [(x, y, z)]最近墙的正常击中。 [（x，y，z）]
+	///  @param[in]		filter		The polygon filter to apply to the query.多边形过滤器应用于查询。
+	///  @param[out]	path		The reference ids of the visited polygons. [opt]访问的多边形的参考ID。 [选择]
+	///  @param[out]	pathCount	The number of visited polygons. [opt]访问的多边形的数量。 [选择]
+	///  @param[in]		maxPath		The maximum number of polygons the @p path array can hold.@p路径数组可以容纳的最大多边形数。
 	/// @returns The status flags for the query.
 	public RaycastHit raycast(long startRef, float[] startPos, float[] endPos, QueryFilter filter, int options, long prevRef) {
 		// Validate input
@@ -2063,11 +2067,11 @@ public class NavMeshQuery {
 
 	/// @par
 	///
-	/// At least one result array must be provided.
+	/// At least one result array must be provided.必须提供至少一个结果数组。
 	///
-	/// The order of the result set is from least to highest cost to reach the polygon.
+	/// The order of the result set is from least to highest cost to reach the polygon.结果集的顺序是从到达到多边形的最低成本。
 	///
-	/// A common use case for this method is to perform Dijkstra searches. 
+	/// A common use case for this method is to perform Dijkstra searches. 此方法的常见用例是执行Dijkstra搜索。
 	/// Candidate polygons are found by searching the graph beginning at the start polygon.
 	///
 	/// If a polygon is not found via the graph search, even if it intersects the 
@@ -2383,17 +2387,17 @@ public class NavMeshQuery {
 	/// @par
 	///
 	/// This method is optimized for a small search radius and small number of result 
-	/// polygons.
+	/// polygons.该方法针对小搜索半径和少量结果多边形进行了优化
 	///
 	/// Candidate polygons are found by searching the navigation graph beginning at 
-	/// the start polygon.
+	/// the start polygon.通过从起始多边形开始搜索导航图可以找到候选多边形。
 	///
 	/// The same intersection test restrictions that apply to the findPolysAroundCircle 
-	/// mehtod applies to this method.
+	/// mehtod applies to this method.适用于findPolysAroundCircle方法的相同交点测试限制适用于此方法。
 	///
-	/// The value of the center point is used as the start point for cost calculations. 
+	/// The value of the center point is used as the start point for cost calculations. 中心点的值用作成本计算的起始点。
 	/// It is not projected onto the surface of the mesh, so its y-value will effect 
-	/// the costs.
+	/// the costs.它不会投影到网格的表面上，因此其y值将影响成本。
 	/// 
 	/// Intersection tests occur in 2D. All polygons and the search circle are 
 	/// projected onto the xz-plane. So the y-value of the center point does not 
@@ -2402,7 +2406,7 @@ public class NavMeshQuery {
 	/// If the result arrays are is too small to hold the entire result set, they will 
 	/// be filled to capacity.
 	/// 
-	/// Finds the non-overlapping navigation polygons in the local neighbourhood around the center position.
+	/// Finds the non-overlapping navigation polygons in the local neighbourhood around the center position.找到位于中心位置附近的当地中不重叠的导航多边形。
 	///  @param[in]		startRef		The reference id of the polygon where the search starts.
 	///  @param[in]		centerPos		The center of the query circle. [(x, y, z)]
 	///  @param[in]		radius			The radius of the query circle.
@@ -2571,8 +2575,8 @@ public class NavMeshQuery {
 	
 	/// @par
 	///
-	/// If the @p segmentRefs parameter is provided, then all polygon segments will be returned. 
-	/// Otherwise only the wall segments are returned.
+	/// If the @p segmentRefs parameter is provided, then all polygon segments will be returned. 如果提供了@p segmentRefs参数，则返回所有的多边形段。
+	/// Otherwise only the wall segments are returned.否则只返回墙段。
 	/// 
 	/// A segment that is normally a portal will be included in the result set as a 
 	/// wall if the @p filter results in the neighbor polygon becoomming impassable.
@@ -2580,7 +2584,7 @@ public class NavMeshQuery {
 	/// The @p segmentVerts and @p segmentRefs buffers should normally be sized for the 
 	/// maximum segments per polygon of the source navigation mesh.
 	/// 
-	/// Returns the segments for the specified polygon, optionally including portals.
+	/// Returns the segments for the specified polygon, optionally including portals.返回指定多边形的段，可选地包括门户。
 	///  @param[in]		ref				The reference id of the polygon.
 	///  @param[in]		filter			The polygon filter to apply to the query.
 	///  @param[out]	segmentVerts	The segments. [(ax, ay, az, bx, by, bz) * segmentCount]
@@ -2678,23 +2682,23 @@ public class NavMeshQuery {
 	
 	/// @par
 	///
-	/// @p hitPos is not adjusted using the height detail data.
+	/// @p hitPos is not adjusted using the height detail data.hitPos不使用高度细节数据进行调整。
 	///
 	/// @p hitDist will equal the search radius if there is no wall within the 
 	/// radius. In this case the values of @p hitPos and @p hitNormal are
 	/// undefined.
 	///
-	/// The normal will become unpredicable if @p hitDist is a very small number.
+	/// The normal will become unpredicable if @p hitDist is a very small number.如果@p hitDist是一个非常小的数字，正常将变得不可预测。
 	///
-	/// Finds the distance from the specified position to the nearest polygon wall.
+	/// Finds the distance from the specified position to the nearest polygon wall. 找到从指定位置到最近的多边形墙的距离。
 	///  @param[in]		startRef		The reference id of the polygon containing @p centerPos.
 	///  @param[in]		centerPos		The center of the search circle. [(x, y, z)]
 	///  @param[in]		maxRadius		The radius of the search circle.
-	///  @param[in]		filter			The polygon filter to apply to the query.
-	///  @param[out]	hitDist			The distance to the nearest wall from @p centerPos.
-	///  @param[out]	hitPos			The nearest position on the wall that was hit. [(x, y, z)]
+	///  @param[in]		filter			The polygon filter to apply to the query. 用户查询的多边形过滤器
+	///  @param[out]	hitDist			The distance to the nearest wall from @p centerPos. 墙与圆形的最近距离
+	///  @param[out]	hitPos			The nearest position on the wall that was hit. [(x, y, z)]在墙上最近被击中的位置。
 	///  @param[out]	hitNormal		The normalized ray formed from the wall point to the 
-	///  								source point. [(x, y, z)]
+	///  								source point. [(x, y, z)]从壁指向源点形成的归一化光线。 [（x，y，z）]
 	/// @returns The status flags for the query.
 	public FindDistanceToWallResult findDistanceToWall(long startRef, float[] centerPos, float maxRadius,
 			QueryFilter filter) {

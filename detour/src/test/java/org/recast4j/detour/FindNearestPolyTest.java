@@ -27,11 +27,13 @@ public class FindNearestPolyTest extends AbstractDetourTest {
 	float[][] polyPos = { { 22.606520f, 10.197294f, -45.918674f }, { 22.331268f, 10.197294f, -1.040187f },
 			{ 18.694363f, 15.803535f, -73.090416f }, { 0.745335f, 10.197294f, -5.940050f },
 			{ -20.651257f, 5.904126f, -13.712508f } };
+	//{ 22.60652f, 10.197294f, -45.918674f }
 
 	@Test
 	public void testFindNearestPoly() {
 		QueryFilter filter = new QueryFilter();
-		float[] extents = { 2, 4, 2 };
+//		float[] extents = { 2, 4, 2 };
+        float[] extents = { 0, 0, 0 };
 		for (int i = 0; i < startRefs.length; i++) {
 			float[] startPos = startPoss[i];
 			FindNearestPolyResult poly = query.findNearestPoly(startPos, extents, filter);

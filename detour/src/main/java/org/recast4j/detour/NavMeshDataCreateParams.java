@@ -47,9 +47,10 @@ public class NavMeshDataCreateParams {
 
 	/// @}
 	/// @name Off-Mesh Connections Attributes (Optional)
-	/// Used to define a custom point-to-point edge within the navigation graph, an 
+	/// Used to define a custom point-to-point edge within the navigation graph, an
 	/// off-mesh connection is a user defined traversable connection made up to two vertices, 
-	/// at least one of which resides within a navigation mesh polygon.
+	/// at least one of which resides within a navigation mesh polygon.用于定义导航图中的自定义点对点边缘
+	// 非网格连接是由两个顶点组成的用户定义的可遍历连接，其中至少一个驻留在导航网格多边形内。
 	/// @{
 
 	/// Off-mesh connection vertices. [(ax, ay, az, bx, by, bz) * #offMeshConCount] [Unit: wu]

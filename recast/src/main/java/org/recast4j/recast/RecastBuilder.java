@@ -98,42 +98,42 @@ public class RecastBuilder {
 		CompactHeightfield chf = buildCompactHeightfield(geom, bcfg, ctx);
 
 		// Partition the heightfield so that we can use simple algorithm later
-		// to triangulate the walkable areas.
-		// There are 3 martitioning methods, each with some pros and cons:
-		// 1) Watershed partitioning
-		// - the classic Recast partitioning
-		// - creates the nicest tessellation
-		// - usually slowest
+		// to triangulate the walkable areas.分隔高度场，以便我们可以使用简单的算法来对可步行区域进行三角测量
+		// There are 3 martitioning methods, each with some pros and cons:有3种方法，每种都有一些利弊：
+		// 1) Watershed partitioning流域划分
+		// - the classic Recast partitioning经典的Recast分区
+		// - creates the nicest tessellation创造最好的细分
+		// - usually slowest通常最慢
 		// - partitions the heightfield into nice regions without holes or
-		// overlaps
+		// overlaps将高度区域划分为没有孔或重叠的好区域
 		// - the are some corner cases where this method creates produces holes
-		// and overlaps
-		// - holes may appear when a small obstacles is close to large open area
-		// (triangulation can handle this)
+		// and overlaps 这种方法创建的一些角落情况会产生孔和重叠
+		// - holes may appear when a small obstacles is close to large open area当小障碍物接近大开放区域时，可能会出现孔洞
+		// (triangulation can handle this)三角测量可以处理这个
 		// - overlaps may occur if you have narrow spiral corridors (i.e
-		// stairs), this make triangulation to fail
+		// stairs), this make triangulation to fail如果您有狭窄的螺旋走廊可能会发生重叠这使得三角测量失败
 		// * generally the best choice if you precompute the nacmesh, use this
-		// if you have large open areas
-		// 2) Monotone partioning
-		// - fastest
-		// - partitions the heightfield into regions without holes and overlaps
-		// (guaranteed)
+		// if you have large open areas 一般来说，如果您预先计算网络，最好的选择，如果您有大的开放区域，请使用此选项
+		// 2) Monotone partioning 单调分区
+		// - fastest 最快
+		// - partitions the heightfield into regions without holes and overlaps 将高度区域划分为没有孔和重叠的区域
+		// (guaranteed)保证
 		// - creates long thin polygons, which sometimes causes paths with
-		// detours
-		// * use this if you want fast navmesh generation
-		// 3) Layer partitoining
-		// - quite fast
-		// - partitions the heighfield into non-overlapping regions
+		// detours 造成长薄的多边形，有时会导致路径弯曲
+		// * use this if you want fast navmesh generation 如果你想要快速的navmesh生成，请使用它
+		// 3) Layer partitoining 层划分
+		// - quite fast 蛮快
+		// - partitions the heighfield into non-overlapping regions 将高地划分为非重叠区域
 		// - relies on the triangulation code to cope with holes (thus slower
-		// than monotone partitioning)
-		// - produces better triangles than monotone partitioning
-		// - does not have the corner cases of watershed partitioning
+		// than monotone partitioning)依靠三角测量代码处理孔（因此比单调分割慢）
+		// - produces better triangles than monotone partitioning 比单调分割产生更好的三角形
+		// - does not have the corner cases of watershed partitioning 没有流域划分的角落
 		// - can be slow and create a bit ugly tessellation (still better than
-		// monotone)
+		// monotone)可能会缓慢，并创造一个有点丑陋的镶嵌（还好比单调）
 		// if you have large open areas with small obstacles (not a problem if
-		// you use tiles)
+		// you use tiles)如果你有大的开放区域有小障碍（如果你使用瓷砖不是问题）
 		// * good choice to use for tiled navmesh with medium and small sized
-		// tiles
+		// tiles用于瓷砖和中小型瓷砖的好选择
 
 		if (cfg.partitionType == PartitionType.WATERSHED) {
 			// Prepare for region partitioning, by calculating distance field
@@ -212,7 +212,7 @@ public class RecastBuilder {
 			}
 		} else {
 			int[] tris = geom.getTris();
-			int ntris = tris.length / 3;
+			int ntris = tris.length / 3; // 三角形个数
 			int[] m_triareas = Recast.markWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, tris, ntris, cfg.walkableAreaMod);
 			totaltris = ntris;
 			RecastRasterization.rasterizeTriangles(ctx, verts, tris, m_triareas, ntris, solid, cfg.walkableClimb);

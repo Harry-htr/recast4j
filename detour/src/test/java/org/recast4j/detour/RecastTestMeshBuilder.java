@@ -27,6 +27,10 @@ import org.recast4j.recast.RecastBuilderConfig;
 import org.recast4j.recast.RecastConfig;
 import org.recast4j.recast.RecastConstants.PartitionType;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 public class RecastTestMeshBuilder {
 
 	private MeshData meshData;
@@ -45,11 +49,17 @@ public class RecastTestMeshBuilder {
 	private final static float m_detailSampleMaxError = 1.0f;
 
 	public RecastTestMeshBuilder() {
-		this(new ObjImporter().load(ObjImporter.class.getResourceAsStream("dungeon.obj")), PartitionType.WATERSHED,
-				m_cellSize, m_cellHeight, m_agentHeight, m_agentRadius, m_agentMaxClimb, m_agentMaxSlope,
-				m_regionMinSize, m_regionMergeSize, m_edgeMaxLen, m_edgeMaxError, m_vertsPerPoly, m_detailSampleDist,
-				m_detailSampleMaxError);
+        this(new ObjImporter().load(ObjImporter.class.getResourceAsStream("dungeon.obj")), PartitionType.WATERSHED,
+                m_cellSize, m_cellHeight, m_agentHeight, m_agentRadius, m_agentMaxClimb, m_agentMaxSlope,
+                m_regionMinSize, m_regionMergeSize, m_edgeMaxLen, m_edgeMaxError, m_vertsPerPoly, m_detailSampleDist,
+                m_detailSampleMaxError);
 	}
+    public RecastTestMeshBuilder(InputStream inputStream) {
+        this(new ObjImporter().load(inputStream), PartitionType.WATERSHED,
+                m_cellSize, m_cellHeight, m_agentHeight, m_agentRadius, m_agentMaxClimb, m_agentMaxSlope,
+                m_regionMinSize, m_regionMergeSize, m_edgeMaxLen, m_edgeMaxError, m_vertsPerPoly, m_detailSampleDist,
+                m_detailSampleMaxError);
+    }
 
 	public RecastTestMeshBuilder(InputGeom m_geom, PartitionType m_partitionType, float m_cellSize, float m_cellHeight,
 			float m_agentHeight, float m_agentRadius, float m_agentMaxClimb, float m_agentMaxSlope, int m_regionMinSize,
@@ -58,6 +68,9 @@ public class RecastTestMeshBuilder {
 		RecastConfig cfg = new RecastConfig(m_partitionType, m_cellSize, m_cellHeight, m_agentHeight, m_agentRadius,
 				m_agentMaxClimb, m_agentMaxSlope, m_regionMinSize, m_regionMergeSize, m_edgeMaxLen, m_edgeMaxError,
 				m_vertsPerPoly, m_detailSampleDist, m_detailSampleMaxError, 0, SampleAreaModifications.SAMPLE_AREAMOD_GROUND);
+
+
+
 		RecastBuilderConfig bcfg = new RecastBuilderConfig(cfg, m_geom.getMeshBoundsMin(), m_geom.getMeshBoundsMax());
 		RecastBuilder rcBuilder = new RecastBuilder();
 		RecastBuilderResult rcResult = rcBuilder.build(m_geom, bcfg);

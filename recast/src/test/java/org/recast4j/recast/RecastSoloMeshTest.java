@@ -41,7 +41,7 @@ public class RecastSoloMeshTest {
 	private int m_vertsPerPoly = 6;
 	private float m_detailSampleDist = 6.0f;
 	private float m_detailSampleMaxError = 1.0f;
-	private PartitionType m_partitionType = PartitionType.WATERSHED;
+	private PartitionType m_partitionType = PartitionType.WATERSHED;// 障碍物类型
 
 	@Test
 	public void testPerformance() {
@@ -104,7 +104,7 @@ public class RecastSoloMeshTest {
 		RecastBuilderConfig bcfg = new RecastBuilderConfig(cfg, bmin, bmax);
 		Context m_ctx = new Context();
 		//
-		// Step 2. Rasterize input polygon soup.
+		// Step 2. Rasterize input polygon soup. 栅格化输入的多边形
 		//
 
 		// Allocate voxel heightfield where we rasterize our input data to.
@@ -123,7 +123,7 @@ public class RecastSoloMeshTest {
 		int[] m_triareas = Recast.markWalkableTriangles(m_ctx, cfg.walkableSlopeAngle, verts, tris, ntris, cfg.walkableAreaMod);
 		RecastRasterization.rasterizeTriangles(m_ctx, verts, tris, m_triareas, ntris, m_solid, cfg.walkableClimb);
 		//
-		// Step 3. Filter walkables surfaces.
+		// Step 3. Filter walkables surfaces. 过滤可行走的面
 		//
 
 		// Once all geometry is rasterized, we do initial pass of filtering to
@@ -134,12 +134,13 @@ public class RecastSoloMeshTest {
 		RecastFilter.filterWalkableLowHeightSpans(m_ctx, cfg.walkableHeight, m_solid);
 
 		//
-		// Step 4. Partition walkable surface to simple regions.
+		// Step 4. Partition walkable surface to simple regions. 划分可行走的面  到简单的区域
 		//
 
-		// Compact the heightfield so that it is faster to handle from now on.
+		// Compact the heightfield so that it is faster to handle from now on. 用heightfield创建Compactheightfield
 		// This will result more cache coherent data as well as the neighbours
 		// between walkable cells will be calculated.
+        // 这将导致更多的缓存一致性数据以及步行单元之间的邻居将被计算。
 		CompactHeightfield m_chf = Recast.buildCompactHeightfield(m_ctx, cfg.walkableHeight, cfg.walkableClimb,
 				m_solid);
 
@@ -153,43 +154,43 @@ public class RecastSoloMeshTest {
 		 * char)vols[i].area, *m_chf);
 		 */
 
-		// Partition the heightfield so that we can use simple algorithm later
+		// Partition the heightfield so that we can use simple algorithm later 分割高度场，以便稍后可以使用简单的算法对步行区进行三角测量
 		// to triangulate the walkable areas.
-		// There are 3 martitioning methods, each with some pros and cons:
-		// 1) Watershed partitioning
-		// - the classic Recast partitioning
-		// - creates the nicest tessellation
-		// - usually slowest
+		// There are 3 martitioning methods, each with some pros and cons: 有3种方法，每一种都有各自的利弊
+		// 1) Watershed partitioning 流域划分
+		// - the classic Recast partitioning 经典的Recast分区
+		// - creates the nicest tessellation 创造最好的细分
+		// - usually slowest 通常最慢
 		// - partitions the heightfield into nice regions without holes or
-		// overlaps
+		// overlaps 将高度区域划分为没有孔或重叠的好区域
 		// - the are some corner cases where this method creates produces holes
-		// and overlaps
-		// - holes may appear when a small obstacles is close to large open area
-		// (triangulation can handle this)
-		// - overlaps may occur if you have narrow spiral corridors (i.e
-		// stairs), this make triangulation to fail
+		// and overlaps 这种方法创建的一些角落情况会产生孔和重叠
+		// - holes may appear when a small obstacles is close to large open area 当小障碍物接近大开放区域时，可能会出现孔洞
+		// (triangulation can handle this)三角测量可以处理这个
+		// - overlaps may occur if you have narrow spiral corridors (i.e 如果您有狭窄的螺旋走廊可能会发生重叠
+		// stairs), this make triangulation to fail 这使得三角测量失败
 		// * generally the best choice if you precompute the nacmesh, use this
-		// if you have large open areas
-		// 2) Monotone partioning
-		// - fastest
-		// - partitions the heightfield into regions without holes and overlaps
+		// if you have large open areas 通常最好的选择，如果你预先计算网络使用这个，如果你有大的开放区域
+		// 2) Monotone partioning 单调分区
+		// - fastest 最快
+		// - partitions the heightfield into regions without holes and overlaps 将高度区域划分为没有孔和重叠的区域
 		// (guaranteed)
 		// - creates long thin polygons, which sometimes causes paths with
-		// detours
-		// * use this if you want fast navmesh generation
-		// 3) Layer partitoining
-		// - quite fast
-		// - partitions the heighfield into non-overlapping regions
-		// - relies on the triangulation code to cope with holes (thus slower
+		// detours 造成长薄的多边形，有时会导致路径弯曲
+		// * use this if you want fast navmesh generation 如果你想要快速的navmesh生成，请使用它
+		// 3) Layer partitoining 层划分
+		// - quite fast 蛮快
+		// - partitions the heighfield into non-overlapping regions 将高地划分为非重叠区域
+		// - relies on the triangulation code to cope with holes (thus slower  依靠三角测量代码处理孔 （因此比单调分区慢）
 		// than monotone partitioning)
-		// - produces better triangles than monotone partitioning
-		// - does not have the corner cases of watershed partitioning
+		// - produces better triangles than monotone partitioning 比单调分割产生更好的三角形
+		// - does not have the corner cases of watershed partitioning 没有流域划分的角落
 		// - can be slow and create a bit ugly tessellation (still better than
-		// monotone)
+		// monotone) 可能会缓慢，并创造一个有点丑陋的镶嵌（任然比单调划分好）
 		// if you have large open areas with small obstacles (not a problem if
-		// you use tiles)
+		// you use tiles) 如果你有大的开放区域有小的障碍（如果你使用瓷砖不是问题）
 		// * good choice to use for tiled navmesh with medium and small sized
-		// tiles
+		// tiles 用于瓷砖和中小型瓷砖的好选择
 
 		if (m_partitionType == PartitionType.WATERSHED) {
 			// Prepare for region partitioning, by calculating distance field
@@ -209,7 +210,7 @@ public class RecastSoloMeshTest {
 		Assert.assertEquals("maxDistance", expDistance, m_chf.maxDistance);
 		Assert.assertEquals("Regions", expRegions, m_chf.maxRegions);
 		//
-		// Step 5. Trace and simplify region contours.
+		// Step 5. Trace and simplify region contours.跟踪并简化区域轮廓
 		//
 
 		// Create contours.
@@ -218,17 +219,17 @@ public class RecastSoloMeshTest {
 
 		Assert.assertEquals("Contours", expContours, m_cset.conts.size());
 		//
-		// Step 6. Build polygons mesh from contours.
+		// Step 6. Build polygons mesh from contours.从轮廓建立多边形网格。
 		//
 
-		// Build polygon navmesh from the contours.
+		// Build polygon navmesh from the contours.从轮廓建立多边形导航。
 		PolyMesh m_pmesh = RecastMesh.buildPolyMesh(m_ctx, m_cset, cfg.maxVertsPerPoly);
 		Assert.assertEquals("Mesh Verts", expVerts, m_pmesh.nverts);
 		Assert.assertEquals("Mesh Polys", expPolys, m_pmesh.npolys);
 
 		//
 		// Step 7. Create detail mesh which allows to access approximate height
-		// on each polygon.
+		// on each polygon.创建细节网格，允许访问每个多边形的近似高度。
 		//
 
 		PolyMeshDetail m_dmesh = RecastMeshDetail.buildPolyMeshDetail(m_ctx, m_pmesh, m_chf, cfg.detailSampleDist,

@@ -94,13 +94,14 @@ public class RecastConfig {
 	/**
 	 * Sets the sampling distance to use when generating the detail mesh. (For height detail only.) [Limits: 0 or >=
 	 * 0.9] [Units: wu]
-     * 生成详细网格时的采样距离
+     * 设置生成细节网格时使用的采样距离
 	 **/
 	public final float detailSampleDist;
 
 	/**
 	 * The maximum distance the detail mesh surface should deviate from heightfield data. (For height detail only.)
 	 * [Limit: >=0] [Units: wu]
+	 * 细节网格表面距离heightfield数据的最大距离
 	 **/
 	public final float detailSampleMaxError;
 
@@ -114,10 +115,10 @@ public class RecastConfig {
 		this.cs = cellSize;
 		this.ch = cellHeight;
 		this.walkableSlopeAngle = agentMaxSlope;
-		this.walkableHeight = (int) Math.ceil(agentHeight / ch);
-		this.walkableClimb = (int) Math.floor(agentMaxClimb / ch);
-		this.walkableRadius = (int) Math.ceil(agentRadius / cs);
-		this.maxEdgeLen = (int) (edgeMaxLen / cellSize);
+		this.walkableHeight = (int) Math.ceil(agentHeight / ch); // 2/0.2 = 10
+		this.walkableClimb = (int) Math.floor(agentMaxClimb / ch); // 0.9/0.2 = 4
+		this.walkableRadius = (int) Math.ceil(agentRadius / cs); // 0.6/0.3 = 2
+		this.maxEdgeLen = (int) (edgeMaxLen / cellSize); // 12/0.3 = 40
 		this.maxSimplificationError = edgeMaxError;
 		this.minRegionArea = regionMinSize * regionMinSize; // Note: area = size*size
 		this.mergeRegionArea = regionMergeSize * regionMergeSize; // Note: area = size*size

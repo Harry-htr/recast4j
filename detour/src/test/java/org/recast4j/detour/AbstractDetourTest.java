@@ -19,6 +19,10 @@ package org.recast4j.detour;
 
 import org.junit.Before;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 public abstract class AbstractDetourTest {
 
 	protected final long[] startRefs = { 281474976710696L, 281474976710773L, 281474976710680L, 281474976710753L,
@@ -45,7 +49,13 @@ public abstract class AbstractDetourTest {
 	}
 
 	protected NavMesh createNavMesh() {
-		return new NavMesh(new RecastTestMeshBuilder().getMeshData(), 6, 0);
+        InputStream in = null;
+        try {
+            in = new FileInputStream(new File("D:/Recast4j/recast4j/detour/src/test/resources/my3.obj"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new NavMesh(new RecastTestMeshBuilder(in).getMeshData(), 6, 0);
 	}
 
 }
