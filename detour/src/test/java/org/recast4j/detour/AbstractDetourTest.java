@@ -51,7 +51,7 @@ public abstract class AbstractDetourTest {
 	protected NavMesh createNavMesh() {
         InputStream in = null;
         try {
-            in = new FileInputStream(new File("D:/Recast4j/recast4j/detour/src/test/resources/my3.obj"));
+            in = new FileInputStream(new File("D:/Recast4j/recast4j/detour/src/test/resources/simple.obj"));
         }catch (Exception e){
             e.printStackTrace();
         }
