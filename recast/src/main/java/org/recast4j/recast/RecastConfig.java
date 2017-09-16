@@ -182,7 +182,6 @@ public class RecastConfig {
         //描述：>= 0, 设置最大的采样偏移距离，最好和contourSampleDistance结合起来看，其效果的精确度受到contourSampleDistance的影响
         //影响：当contourSampleDistance为0时，这个特性选项无效,在实际使用时发现在这个值越接近0，其生成的网格就越偏离原始图形
 		this.detailSampleMaxError = cellHeight * detailSampleMaxError;
-
 		this.tileSize = tileSize;
 		this.walkableAreaMod = walkableAreaMod;
 	}
