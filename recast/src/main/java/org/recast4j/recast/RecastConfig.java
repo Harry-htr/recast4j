@@ -134,7 +134,7 @@ public class RecastConfig {
         // 描述：> 0,可跨越不同地形时的高度，设定像是从普通平面移动到楼梯这样的地形是否可通过的高度阀值
         // 影响：过低的值可能会导致无法通过原本可通过的地形，比如从平面到楼梯，导航网格生成时可能会发现楼梯的导航网格断裂缺失
         // 导致无法楼梯寻路，设定值过高会导致原本不该通过的小物件能够被角色跨越,同样，值设定必须大于cellHeight的2倍
-		this.walkableClimb = (int) Math.floor(agentMaxClimb / ch); // 0.9/0.2 = 4
+		this.walkableClimb = (int) Math.floor(agentMaxClimb / ch); // 0.9/0.2 = 4.5
 
         // 描述：>= 0,可行走区域与阻挡物之前的距离大小
         // 影响：值设定必须大于cellSize的2倍才能产生效果(因为导航网格的生成的实际上是建立在由voxel所组成的三维世界中)，
